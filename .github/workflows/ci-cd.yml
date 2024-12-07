@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD Pipeline (Local Development)
 
 on:
   push:
@@ -9,56 +9,9 @@ on:
       - main
 
 jobs:
-  deploy-frontend:
+  local-development-placeholder:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout Code
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Step 2: Install Heroku CLI
-      - name: Install Heroku CLI
-        run: curl https://cli-assets.heroku.com/install.sh | sh
-
-      # Step 3: Login to Heroku
-      - name: Login to Heroku
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: |
-          echo $HEROKU_API_KEY | heroku auth:token > ~/.netrc
-          heroku auth:whoami
-
-      # Step 4: Deploy Frontend to Heroku
-      - name: Deploy Frontend
-        working-directory: ./frontend
-        run: |
-          heroku git:remote -a your-frontend-app-name
-          git push heroku main
-
-  deploy-backend:
-    runs-on: ubuntu-latest
-
-    steps:
-      # Step 1: Checkout Code
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Step 2: Install Heroku CLI
-      - name: Install Heroku CLI
-        run: curl https://cli-assets.heroku.com/install.sh | sh
-
-      # Step 3: Login to Heroku
-      - name: Login to Heroku
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: |
-          echo $HEROKU_API_KEY | heroku auth:token > ~/.netrc
-          heroku auth:whoami
-
-      # Step 4: Deploy Backend to Heroku
-      - name: Deploy Backend
-        working-directory: ./backend
-        run: |
-          heroku git:remote -a your-backend-app-name
-          git push heroku main
+      - name: Placeholder for Local Development
+        run: echo "No deployment or tests. Project is being run locally only."

@@ -12,7 +12,6 @@ Thumbs.db
 
 # Deployment
 .heroku/
-.netlify/
 
 # Build files
 dist/
