@@ -1,0 +1,60 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout Code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set Up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      # Step 3: Install Dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Run Tests
+      - name: Run tests
+        run: npm test
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      # Step 1: Checkout Code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Deploy to Netlify (Frontend)
+      - name: Deploy Frontend to Netlify
+        uses: nwtgck/actions-netlify@v3
+        with:
+          publish-dir: ./build
+          production-deploy: true
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+      # Step 3: Deploy Backend to Heroku
+      - name: Deploy Backend to Heroku
+        uses: akhileshns/heroku-deploy@v4.0.0
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: 'your-backend-app-name'
+          heroku_email: 'your-email@example.com'
