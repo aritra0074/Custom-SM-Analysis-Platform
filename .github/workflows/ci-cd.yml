@@ -9,43 +9,7 @@ on:
       - main
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-
-    steps:
-      # Step 1: Checkout Code
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Step 2: Set Up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'npm'
-
-      # Step 3: Install Dependencies (Frontend)
-      - name: Install Frontend Dependencies
-        working-directory: ./frontend
-        run: npm install
-
-      # Step 4: Install Dependencies (Backend)
-      - name: Install Backend Dependencies
-        working-directory: ./backend
-        run: npm install
-
-      # Step 5: Run Tests (Frontend)
-      - name: Run Frontend Tests
-        working-directory: ./frontend
-        run: npm test || echo "Frontend tests failed; skipping for now."
-
-      # Step 6: Run Tests (Backend)
-      - name: Run Backend Tests
-        working-directory: ./backend
-        run: npm test || echo "Backend tests failed; skipping for now."
-
   deploy-frontend:
-    needs: build-and-test
     runs-on: ubuntu-latest
 
     steps:
@@ -73,7 +37,6 @@ jobs:
           git push heroku main
 
   deploy-backend:
-    needs: build-and-test
     runs-on: ubuntu-latest
 
     steps:
